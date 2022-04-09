@@ -1,0 +1,22 @@
+[
+  {
+    "moves":[
+      {
+        "repeats": 1,
+        "move": [1, 0],
+        "fps_timeout": 1
+      }
+    ],
+    "sprite_path": "game_animations/Player/move_right/0.png"
+  },
+  {
+    "moves":[
+      {
+        "repeats": 1,
+        "move": [1, 0],
+        "fps_timeout": 1
+      } 
+    ],
+    "sprite_path": "game_animations/Player/move_right/1.png"
+  }
+]

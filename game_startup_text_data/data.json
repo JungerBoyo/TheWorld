@@ -1,0 +1,74 @@
+[
+  {
+    "lhsButtonText": "",
+    "rhsButtonText": " >> ",
+    "textLines":[
+      "There exist only two worlds",
+      "",
+      ""
+    ]
+  },
+  {
+    "lhsButtonText": "",
+    "rhsButtonText": " >> ",
+    "textLines":[
+      "Circular and Square",
+      "",
+      ""
+    ]
+  },
+  {
+    "lhsButtonText": "",
+    "rhsButtonText": " >> ",
+    "textLines":[
+      "The Heaven and The Earth",
+      "",
+      ""
+    ]
+  },
+  {
+    "lhsButtonText": "",
+    "rhsButtonText": "Answer",
+    "textLines":[
+      "What would happen",
+      "if you try to combine them?",
+      ""
+    ]
+  },
+  {
+    "lhsButtonText": "camelCase",
+    "rhsButtonText": "snake_case",
+    "textLines":[
+      "Which",
+      "\"naming convention\"",
+      "do you prefer?"
+    ]
+  },
+  {
+    "lhsButtonText": "On the next line",
+    "rhsButtonText": "On the same line",
+    "textLines":[
+      "Where do you like",
+      "to put curly brackets?",
+      ""
+    ]
+  },
+  {
+    "lhsButtonText": "Yes",
+    "rhsButtonText": "Yes",
+    "textLines":[
+      "So if you like spaghetti code",
+      "do you like spaghetti?",
+      ""
+    ]
+  },
+  {
+    "lhsButtonText": "int i{0}",
+    "rhsButtonText": "int i = 0",
+    "textLines":[
+      "Would you rather",
+      "",
+      ""
+    ]
+  }
+]

@@ -5,6 +5,9 @@ catch2/2.13.8
 docopt.cpp/0.6.3
 #fmt/8.1.1
 spdlog/1.9.2
+nlohmann_json/3.10.5
+lodepng/cci.20200615
+glm/0.9.9.8
 
 [generators]
 cmake_find_package_multi
