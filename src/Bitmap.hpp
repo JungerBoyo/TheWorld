@@ -20,7 +20,7 @@ struct Bitmap
     :  width_(width), height_(height), pixels_(width * height, Pixel{})
   {}
 
-  Bitmap(const std::string& imgPath);
+  explicit Bitmap(const std::string& imgPath);
 
   void DrawOther(std::size_t x0, std::size_t y0, const Bitmap& other);
   void Clear();

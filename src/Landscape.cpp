@@ -44,14 +44,14 @@ void Landscape::Render(ftxui::Screen &scr)
         //scrPx.character = bPx.ch;
 
         const auto color = bPx.color;
-        scrPx.foreground_color = ftxui::Color{ color.r, color.g, color.b };
+        scrPx.foreground_color = ftxui::Color{ color[0], color[1], color[2] };
       }
       else
       {
         //scrPx.character = fPx.ch;
 
         const auto color = fPx.color;
-        scrPx.foreground_color = ftxui::Color{ color.r, color.g, color.b };
+        scrPx.foreground_color = ftxui::Color{ color[0], color[1], color[2] };
       }
     }
   }

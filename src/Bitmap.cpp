@@ -7,10 +7,10 @@
 Bitmap::Bitmap(const std::string& imgPath)
 {
   std::vector<unsigned char> img;
-  unsigned int width;
-  unsigned int height;
+  unsigned int width{0U};
+  unsigned int height{0U};
 
-  const auto err = lodepng::decode(img, width, height, imgPath);
+  [[maybe_unused]] const auto err = lodepng::decode(img, width, height, imgPath);
 
   assert(err == 0);
 
@@ -27,9 +27,9 @@ Bitmap::Bitmap(const std::string& imgPath)
     {
       auto& px = at(x, y);
 
-      px.color.r = img[imgIter++];
-      px.color.g = img[imgIter++];
-      px.color.b = img[imgIter++];
+      px.color[0] = img[imgIter++];
+      px.color[1] = img[imgIter++];
+      px.color[2] = img[imgIter++];
 
       if(img[imgIter++] == 0)
       {
@@ -51,9 +51,9 @@ void Bitmap::DrawOther(std::size_t x0, std::size_t y0, const Bitmap& other)
   assert(x1 <= width_ && y1 <= height_);
 
   // m = this bitmap, n = other bitmap
-  for(std::size_t y_m{y0}, y_n{0ul}; y_m<y1 && y_n < other.height_; ++y_m, ++y_n)
+  for(std::size_t y_m{y0}, y_n{0}; y_m<y1 && y_n < other.height_; ++y_m, ++y_n)
   {
-    for(std::size_t x_m{x0}, x_n{0ul}; x_m<x1 && x_n < other.width_; ++x_m, ++x_n)
+    for(std::size_t x_m{x0}, x_n{0}; x_m<x1 && x_n < other.width_; ++x_m, ++x_n)
     {
       this->at(x_m, y_m) = other.at(x_n, y_n);
     }

@@ -3,7 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupOut, std::function<void()> contextSwitchCallback)
+Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupOut, const std::function<void()>& contextSwitchCallback)
 {
   /// loading text for substages from json file
   std::ifstream stream(startupTextDataJsonPath.data());
@@ -14,15 +14,15 @@ Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupO
   stream >> j;
   stream.close();
 
-  std::size_t i{ 0ul };
+  std::size_t i{ 0UL };
   for(const auto& value : j)
   {
-    substageInfos_[i].lhsButtonText_ = value["lhsButtonText"].get<std::string>();
-    substageInfos_[i].rhsButtonText_ = value["rhsButtonText"].get<std::string>();
+    substageInfos_.at(i).lhsButtonText_ = value["lhsButtonText"].get<std::string>();
+    substageInfos_.at(i).rhsButtonText_ = value["rhsButtonText"].get<std::string>();
 
     auto lines = value["textLines"].get<std::vector<std::string>>();
 
-    substageInfos_[i].textLines_ = {{lines[0], lines[1], lines[2]}};
+    substageInfos_.at(i).textLines_ = {{lines[0], lines[1], lines[2]}};
 
     ++i;
   }
@@ -30,16 +30,11 @@ Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupO
   currentLhsButtonText_ = substageInfos_.front().lhsButtonText_;
   currentRhsButtonText_ = substageInfos_.front().rhsButtonText_;
 
-
   /// defining buttons
-  constexpr std::size_t lookStageIndex { 4ul };
-  constexpr std::size_t imStageIndex   { 5ul };
-  constexpr std::pair<std::size_t, std::size_t> haveStageIndices{ 6ul, 7ul };
-
-  startupOut = 0ul;
+  startupOut = 0UL;
 
   lhsButton_ = ftxui::Button(&currentLhsButtonText_, 
-  [this, &startupOut, contextSwitchCallback, lookStageIndex, imStageIndex, haveStageIndices]{
+  [&, contextSwitchCallback]{
 
     if(currentSubstageIndex_ >= lookStageIndex)
     {
@@ -66,12 +61,12 @@ Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupO
       }
     }
 
-    currentLhsButtonText_ = substageInfos_[currentSubstageIndex_].lhsButtonText_;
-    currentRhsButtonText_ = substageInfos_[currentSubstageIndex_].rhsButtonText_;    
+    currentLhsButtonText_ = substageInfos_.at(currentSubstageIndex_).lhsButtonText_;
+    currentRhsButtonText_ = substageInfos_.at(currentSubstageIndex_).rhsButtonText_;    
   });
 
   rhsButton_ = ftxui::Button(&currentRhsButtonText_, 
-  [this, &startupOut, contextSwitchCallback, lookStageIndex, imStageIndex, haveStageIndices]{
+  [&, contextSwitchCallback]{
 
     if(currentSubstageIndex_ == haveStageIndices.first || currentSubstageIndex_ == haveStageIndices.second)
     {
@@ -82,8 +77,8 @@ Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupO
       ++currentSubstageIndex_;
     }
 
-    currentLhsButtonText_ = substageInfos_[currentSubstageIndex_].lhsButtonText_;
-    currentRhsButtonText_ = substageInfos_[currentSubstageIndex_].rhsButtonText_;   
+    currentLhsButtonText_ = substageInfos_.at(currentSubstageIndex_).lhsButtonText_;
+    currentRhsButtonText_ = substageInfos_.at(currentSubstageIndex_).rhsButtonText_;   
   });
 
   this->Add(ftxui::Container::Vertical({lhsButton_, rhsButton_}));
@@ -108,8 +103,6 @@ Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupO
 
 ftxui::Element Startup::Render()
 {
-  constexpr std::size_t answerStageIndex{ 3ul };
-
   return ftxui::vbox({
           ftxui::filler(),
           ftxui::hbox({
@@ -117,9 +110,9 @@ ftxui::Element Startup::Render()
             circleCanv_,
             ftxui::filler(),
             ftxui::vbox({
-              ftxui::text(substageInfos_[currentSubstageIndex_].textLines_[0]) | ftxui::bold | ftxui::center,// NOLINT 
-              ftxui::text(substageInfos_[currentSubstageIndex_].textLines_[1]) | ftxui::bold | ftxui::center,// NOLINT
-              ftxui::text(substageInfos_[currentSubstageIndex_].textLines_[2]) | ftxui::bold | ftxui::center // NOLINT
+              ftxui::text(substageInfos_.at(currentSubstageIndex_).textLines_.at(0)) | ftxui::bold | ftxui::center,// NOLINT 
+              ftxui::text(substageInfos_.at(currentSubstageIndex_).textLines_.at(1)) | ftxui::bold | ftxui::center,// NOLINT
+              ftxui::text(substageInfos_.at(currentSubstageIndex_).textLines_.at(2)) | ftxui::bold | ftxui::center // NOLINT
             }),    
             ftxui::filler(),
             squareCanv_,

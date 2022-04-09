@@ -18,11 +18,11 @@ AnimatedMovePattern::AnimatedMovePattern(std::string_view jsonDataFilePath)
     Frame frame;
     for(const auto& jMove : value["moves"])
     { 
-      Move move;
+      Move move{};
 
       const auto mv = jMove["move"].get<std::pair<int32_t, int32_t>>();
-      move.vec.x = mv.first;
-      move.vec.y = mv.second;
+      move.vec[0] = mv.first;
+      move.vec[1] = mv.second;
 
       move.timeout = jMove["fps_timeout"].get<uint32_t>();
       move.repeats = jMove["repeats"].get<uint32_t>();
@@ -35,8 +35,8 @@ AnimatedMovePattern::AnimatedMovePattern(std::string_view jsonDataFilePath)
     frames_.push_back(frame);
   }
 
-  currentFrameIndex_ = 0ul;
-  currentMoveIndex_ = 0ul;
+  currentFrameIndex_ = 0;
+  currentMoveIndex_ = 0;
 
   const auto& firstMove =  frames_.front().moves.front();
   currentRepeatCounter_ = firstMove.repeats;
@@ -65,7 +65,7 @@ std::pair<std::shared_ptr<const Bitmap>, glm::ivec2> AnimatedMovePattern::Iterat
   const auto& frame = frames_[currentFrameIndex_];
   const auto& move = frame.moves[currentMoveIndex_];
 
-  const auto result = (currentTimeoutCounter_ == move.timeout) ? std::pair{frame.sprite, move.vec} : std::pair{frame.sprite, glm::ivec2{0, 0}};
+  auto result = (currentTimeoutCounter_ == move.timeout) ? std::pair{frame.sprite, move.vec} : std::pair{frame.sprite, glm::ivec2{0, 0}};
 
   if(currentTimeoutCounter_ == 0)
   {
@@ -76,14 +76,14 @@ std::pair<std::shared_ptr<const Bitmap>, glm::ivec2> AnimatedMovePattern::Iterat
         if(currentFrameIndex_ + 1 == frames_.size())
         {
           ended = true;
-          currentFrameIndex_ = 0ul;
-          currentMoveIndex_ = 0ul;
+          currentFrameIndex_ = 0;
+          currentMoveIndex_ = 0;
 
         }
         else
         {
           ++currentFrameIndex_;
-          currentMoveIndex_ = 0ul;
+          currentMoveIndex_ = 0;
         }
       }
       else
@@ -111,6 +111,6 @@ std::pair<std::shared_ptr<const Bitmap>, glm::ivec2> AnimatedMovePattern::Iterat
 
 std::pair<std::shared_ptr<const Bitmap>, glm::ivec2> AnimatedMovePattern::Iteration() 
 {
-  bool dummy;
+  bool dummy{false};
   return Iteration(dummy);    
 }

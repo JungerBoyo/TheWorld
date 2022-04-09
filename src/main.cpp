@@ -12,7 +12,7 @@ int main()
 
   auto startup = std::make_shared<Startup>("game_startup_text_data/data.json", startupOut, [&selector]{ selector = 1; });
 
-  const std::array<std::string, 8> hallPaths
+  const std::array<std::string, World::HallCount> hallPaths
   {{  
     "game_maps/0.png",
     "game_maps/0.png",

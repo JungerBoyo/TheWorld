@@ -29,9 +29,7 @@ static auto FeedbackClamp(int32_t p0, int32_t p1, int32_t lowerConstraint, int32
   return std::make_tuple(p0, p1, inBounds);
 }
 
-glm::bvec2 CollisionValidator::TestBox(glm::ivec2& boxPoint00, glm::ivec2 boxPoint11) 
-{
-  /*         (boxPoint00)
+/*         (boxPoint00)
             |
     (p00_)  |
       +-----↓--+
@@ -40,10 +38,11 @@ glm::bvec2 CollisionValidator::TestBox(glm::ivec2& boxPoint00, glm::ivec2 boxPoi
       |     +--|-+ ←--(boxPoint11)
       +--------+
               (p11_)
-  */
-
-  const auto[x0, x1, xInBounds] = FeedbackClamp(boxPoint00.x, boxPoint11.x, p00_.x, p11_.x);
-  const auto[y0, y1, yInBounds] = FeedbackClamp(boxPoint00.y, boxPoint11.y, p00_.y, p11_.y);
+*/
+glm::bvec2 CollisionValidator::TestBox(glm::ivec2& boxPoint00, glm::ivec2 boxPoint11) const
+{
+  const auto[x0, x1, xInBounds] = FeedbackClamp(boxPoint00[0], boxPoint11[0], p00_[0], p11_[0]);
+  const auto[y0, y1, yInBounds] = FeedbackClamp(boxPoint00[1], boxPoint11[1], p00_[1], p11_[1]);
 
   boxPoint00 = {x0, y0};
 

@@ -9,7 +9,7 @@
 
 struct AnimatedMovePattern
 {
-  AnimatedMovePattern(std::string_view jsonDataFilePath);
+  explicit AnimatedMovePattern(std::string_view jsonDataFilePath);
 
   /// returns iteration sprite and iteration move
   std::pair<std::shared_ptr<const Bitmap>, glm::ivec2> Iteration(bool& ended);
