@@ -35,11 +35,13 @@ add_executable(intro
   AnimatedMovePattern.hpp
   AnimatedMovePattern.cpp
 
-  CollisionValidator.hpp
-  CollisionValidator.cpp
-
   Skill.hpp
   Skill.cpp
+
+  Box.hpp
+  Box.cpp
+  Line.hpp
+  Line.cpp 
 ) 
 
 

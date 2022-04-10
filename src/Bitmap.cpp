@@ -31,13 +31,9 @@ Bitmap::Bitmap(const std::string& imgPath)
       px.color[1] = img[imgIter++];
       px.color[2] = img[imgIter++];
 
-      if(img[imgIter++] == 0)
+      if(img[imgIter++] > 0)
       {
-        px.ch = U' ';
-      }
-      else
-      {
-        px.ch = U'█';
+        px.state = true;
       }
     }
   }
@@ -64,12 +60,12 @@ void Bitmap::Clear()
 {
   for(auto& pixel : pixels_)
   {
-    pixel.ch = U' ';
+    pixel.state = false;
   }
 }
 
 /// based on ftxui canvas draw line implementation
-void Bitmap::DrawLine(glm::ivec2 p00, glm::ivec2 p11, Pixel px) 
+void Bitmap::DrawLine(glm::ivec2 p00, glm::ivec2 p11, const std::vector<glm::u8vec3>& colors) 
 {
   const auto dx = std::abs(p11[0] - p00[0]);
   const auto dy = std::abs(p11[1] - p00[1]);
@@ -89,8 +85,10 @@ void Bitmap::DrawLine(glm::ivec2 p00, glm::ivec2 p11, Pixel px)
         ( y >= 0 && y < static_cast<int32_t>(height_) ); 
         ++i) 
   {
-    at(static_cast<std::size_t>(x), static_cast<std::size_t>(y)) = px;
-  
+    auto& px = at(static_cast<std::size_t>(x), static_cast<std::size_t>(y));
+    px.state = true;
+    px.color = colors.at(static_cast<std::size_t>(i) % colors.size());
+
     if (error >= -dy) 
     {
       error -= dy;
@@ -102,5 +100,4 @@ void Bitmap::DrawLine(glm::ivec2 p00, glm::ivec2 p11, Pixel px)
       y += sy;
     }
   }
-  at(static_cast<std::size_t>(p11[0]), static_cast<std::size_t>(p11[1])) = px;
 }

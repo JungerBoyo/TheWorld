@@ -10,10 +10,10 @@
 
 struct Entity
 {
-  Entity(glm::ivec2 pos, glm::ivec2 extent, int32_t health);
+  Entity(glm::ivec2 pos, glm::ivec2 extent, int32_t dmgCooldown, int32_t health);
   
-  virtual bool InflictDmg(int32_t dmg, int32_t cooldown);
-  virtual void CommitNextPos([[maybe_unused]] glm::bvec2 xyUnchanged, glm::ivec2 nextPos);
+  virtual void InflictDmg(int32_t dmg);
+  virtual void SetPosition(glm::ivec2 newPos);
 
   virtual std::shared_ptr<const Bitmap> CurrentSprite() = 0;
 
@@ -24,8 +24,10 @@ struct Entity
   [[nodiscard]] auto nextPos() const { return pos_ + accumMv_; }
   [[nodiscard]] auto extent() const { return extent_; }
   [[nodiscard]] auto skill() const { return skill_; }
+  [[nodiscard]] auto boundingBox() const { return Box(pos_, pos_ + extent_); }
   [[nodiscard]] auto healthStateNormalized() const { return static_cast<float>(health_)/static_cast<float>(fullHealth_); }
- 
+  [[nodiscard]] auto dead() const { return health_ < 0; }
+
   virtual ~Entity() = default;
 
 protected:
@@ -40,6 +42,7 @@ private:
   int32_t fullHealth_;
   int32_t health_;
 
+  int32_t dmgCooldown_;
   int32_t dmgCooldownCounter_{ 0 };
 
   glm::ivec2 accumMv_{0, 0};

@@ -6,7 +6,7 @@ Player::Player(
   std::string_view walkLeftAnimMvJsonFilePath,
   std::string_view walkRightAnimMvJsonFilePath
 )
-  : Entity(pos, {3, 4}, 100),//NOLINT
+  : Entity(pos, {3, 4}, 3, 100),//NOLINT
 
     standAnimMv_(standAnimMvJsonFilePath),
     walkLeftAnimMv_(walkLeftAnimMvJsonFilePath),

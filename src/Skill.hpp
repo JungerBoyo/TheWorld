@@ -2,69 +2,91 @@
 #define SKILL_HPP
 
 #include <tuple>
+#include <memory>
+#include <functional>
 #include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+
+
+#include "Box.hpp"
+
+struct Entity;
 
 struct Skill
 {
-  enum class Type { lines, points };
+  struct SkillInstance
+  {
+    void Move();
+    void Cut();
 
-  Skill(int32_t propagationSpeed, int32_t len, int32_t width, int32_t cooldown, Type type)
-    : propagationSpeed_(propagationSpeed),
-      len_(len),
-      width_(width),
-      cooldown_(cooldown),
-      type_(type){}
-  
-  /// returns begin point and end point
-  virtual std::pair<glm::ivec2, glm::ivec2> Iteration() = 0;
+    glm::ivec2 p0;
+    glm::ivec2 p1;
+
+    int32_t propagationCounter{0};
+  };
+
+  Skill(
+    Box skillBoundaryBox,
+    int32_t dmg,
+    int32_t propagationSpeed, 
+    int32_t length, 
+    int32_t cooldown, 
+    std::size_t maxInstances,
+    const std::vector<glm::u8vec3>& colors
+  ) 
+  : 
+    skillBoundaryBox_(skillBoundaryBox),
+    dmg_(dmg),
+    propagationSpeed_(propagationSpeed),
+    length_(length),
+    cooldown_(cooldown),
+    maxInstances_(maxInstances),
+    colors_(colors)
+  {
+    instances_.reserve(maxInstances);
+  }
+
   virtual void Launch(glm::ivec2 beginPoint, glm::ivec2 endPoint) = 0;
+  void Iteration(const std::shared_ptr<Entity>& objective);
+  void ForEachInstance(const std::function<void(const SkillInstance&, const std::vector<glm::u8vec3>& colors)>& fn) const;
+  
+  [[nodiscard]] auto cooldownStateNormalized() const { return static_cast<float>(cooldownCounter_)/static_cast<float>(cooldown_); }
+  [[nodiscard]] const auto& colors() const { return colors_; }
+ 
+  virtual ~Skill() = default;
 
-  [[nodiscard]] auto width() const { return width_; }
-  [[nodiscard]] auto type() const { return type_; }
-  [[nodiscard]] auto cooldownStateNormalized() const { return static_cast<float>(cooldownCounter_)/static_cast<float>(cooldown_); };
+protected: 
+  void AddInstance(SkillInstance instance);
+  void ResetCooldownCounter();
+  [[nodiscard]] auto full() const { return instances_.size() == maxInstances_; }  
+  [[nodiscard]] auto skillLength() const { return length_; }
+  [[nodiscard]] auto cooldownCounter() const { return cooldownCounter_; }
 
-  [[nodiscard]] virtual bool launched() const = 0;
-
-  virtual ~Skill() = default; 
-
-protected:
-  [[nodiscard]] auto propagationSpeed() const { return propagationSpeed_; }
-  [[nodiscard]] auto length() const { return len_; }
-  [[nodiscard]] auto cooldown() const { return cooldown_; }
-
-  int32_t cooldownCounter_{0};
+  Box skillBoundaryBox_;
 
 private:
+  int32_t dmg_;
   int32_t propagationSpeed_;
-  int32_t len_;
-  int32_t width_;
+  int32_t length_;
   int32_t cooldown_;
-  Type type_;
+  std::size_t maxInstances_;
+  std::vector<SkillInstance> instances_;
+  std::vector<glm::u8vec3> colors_;
+  
+  int32_t cooldownCounter_{0};
 };
+
 
 /*
-  Directional Ray
-  _____
-  _____
-  _____
+_____
+_____
+_____
 */
-struct Chien : public Skill
+struct DirectionalRay : public Skill
 {
-  Chien();
-
+  explicit DirectionalRay(Box skillBoundaryBox);
   void Launch(glm::ivec2 beginPoint, glm::ivec2 endPoint) override;
-  std::pair<glm::ivec2, glm::ivec2> Iteration() override;
-
-  [[nodiscard]] bool launched() const override;
-
-private:
-  glm::ivec2 beginPoint_{0, 0};
-  glm::ivec2 endPoint_{0, 0};
-
-  static constexpr int32_t LaunchTime{3};
-  int32_t launchedCounter_{0};
-
-  bool launched_{false};
 };
+
 
 #endif

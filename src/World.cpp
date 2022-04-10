@@ -22,8 +22,8 @@ World::World(
               "game_animations/Player/move_left/data.json",
               "game_animations/Player/move_right/data.json"
             ),
-    
-    collisionValidator_({0, 0}, {width, height - 9 - bottomPanelSize}), // NOLINT width of the ground = 9px
+  
+    worldBoundaryBox_({0, 0}, {width, height - 9 - bottomPanelSize}), // NOLINT width of the ground = 9px
     quitGameCallback_(std::move(quitGameCallback))
 {
   for(std::size_t i{0}; i<hallPaths.size(); ++i)
@@ -36,41 +36,55 @@ World::World(
   landscape_->SetForeground(currentFrame_);
   landscape_->SetBackground(halls_.at(currentHallIndex_));
 
-
-  player_.SetSkill(std::make_shared<Chien>());
+  player_.SetSkill(std::make_shared<DirectionalRay>(worldBoundaryBox_));
 }
 
 void World::NextIteration()
 {
-  const auto sprite = player_.CurrentSprite();
-  const auto pos = player_.pos();
+  /// DRAWING ///
+    /// PLAYER ///
+  const auto playerSprite = player_.CurrentSprite();
+  const auto playerPos = player_.pos();
+  auto playerSkill = player_.skill();
 
-  //assert(pos.x >= 0 && pos.y >= 0);// DEBUG
-
-  currentFrame_->DrawOther(static_cast<std::size_t>(pos[0]), static_cast<std::size_t>(pos[1]), *sprite);
-
-  auto[beginPoint, endPoint] = player_.skill()->Iteration();
-  collisionValidator_.TestLine(beginPoint, endPoint);
-
-  Pixel px{};
-  px.color = {0, 0, 0};// NOLINT
-  px.ch = U'█';
-
-  currentFrame_->DrawLine(beginPoint, endPoint, px);
+  currentFrame_->DrawOther(static_cast<std::size_t>(playerPos[0]), static_cast<std::size_t>(playerPos[1]), *playerSprite);
   
+  playerSkill->ForEachInstance([frame = currentFrame_]
+  (const Skill::SkillInstance& value, const std::vector<glm::u8vec3>& colors)
+  {
+    frame->DrawLine(value.p0, value.p1, colors);
+  });
 
+  /// ITERATION ///
+    /// PLAYER /// 
   auto nextPos00 = player_.nextPos();
   auto nextPos11 = nextPos00 + player_.extent();
 
-  const auto testResult = collisionValidator_.TestBox(nextPos00, nextPos11);
-  player_.CommitNextPos(testResult, nextPos00);
+  if(nextPos00[0] == worldBoundaryBox_.xMin())// NOLINT
+  {
+    nextPos00[0] = worldBoundaryBox_.xMax() - player_.extent().x - 1;// NOLINT
+    nextPos11[0] = nextPos00[0] + player_.extent()[0];
+   
+    currentHallIndex_ = currentHallIndex_ == 0 ? HallCount - 1 : currentHallIndex_ - 1;// NOLINT
+    landscape_->SetBackground(halls_.at(currentHallIndex_));
+  }
+  else if(nextPos11[0] == worldBoundaryBox_.xMax())// NOLINT
+  {
+    nextPos00[0] = worldBoundaryBox_.xMin() + 2;// NOLINT
+    nextPos11[0] = nextPos00[0] + player_.extent()[0];
+
+    currentHallIndex_ = (currentHallIndex_ + 1) % HallCount;// NOLINT
+    landscape_->SetBackground(halls_.at(currentHallIndex_));
+  }
+
+  Box pBox(nextPos00, nextPos11);
+
+  pBox.ShiftToFitIn(worldBoundaryBox_);
+
+  player_.SetPosition(pBox.p00());
+
+  playerSkill->Iteration(nullptr);
 }
-/*
-  p1 
-
-
-        p2
-*/
 
 ftxui::Element World::Render()
 {
@@ -144,6 +158,8 @@ bool World::OnEvent(ftxui::Event ev)
     const auto y = std::clamp(ev.mouse().y - 1, 0, static_cast<int32_t>(height_ - 1));// NOLINT
 
     player_.LaunchSkill({x, y});
+
+    return true;
   }
 
   return false;

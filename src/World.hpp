@@ -5,8 +5,6 @@
 #include <ftxui/component/event.hpp>
 
 #include <array>
-
-#include "CollisionValidator.hpp"
 #include "Landscape.hpp"
 #include "Player.hpp"
 
@@ -28,7 +26,6 @@ struct World : ftxui::ComponentBase
   bool OnEvent(ftxui::Event) override;
   
 private:
-
   std::size_t width_;
   std::size_t height_;
   std::size_t& currentHallIndex_;
@@ -39,7 +36,7 @@ private:
   std::shared_ptr<Bitmap> currentFrame_;
 
   Player player_;
-  CollisionValidator collisionValidator_;
+  Box worldBoundaryBox_;
 
   std::function<void()> quitGameCallback_;
 };

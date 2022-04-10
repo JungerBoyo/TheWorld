@@ -1,23 +1,23 @@
 #include "Entity.hpp"
 
-Entity::Entity(glm::ivec2 pos, glm::ivec2 extent, int32_t health)
+Entity::Entity(glm::ivec2 pos, glm::ivec2 extent, int32_t dmgCooldown, int32_t health)
   : pos_(pos),
     extent_(extent),
     fullHealth_(health),
-    health_(health)
+    health_(health),
+    dmgCooldown_(dmgCooldown)
 {}
 
-bool Entity::InflictDmg(int32_t dmg, int32_t cooldown)
+void Entity::InflictDmg(int32_t dmg)
 {
   health_ -= dmg;
-  dmgCooldownCounter_ = cooldown;
-
-  return health_ < 0;
+  dmgCooldownCounter_ = dmgCooldown_;
 }
 
-void Entity::CommitNextPos([[maybe_unused]] glm::bvec2 xyUnchanged, glm::ivec2 nextPos)
+void Entity::SetPosition(glm::ivec2 newPos)
 {
-  pos_ = nextPos;
+  pos_ = newPos;
+
   accumMv_ = {0, 0};
 }
 

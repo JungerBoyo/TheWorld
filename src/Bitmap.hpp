@@ -9,7 +9,7 @@
 
 struct Pixel
 {
-  char32_t ch{ U' ' };
+  bool state{false};
   glm::u8vec3 color;
 };
 
@@ -22,7 +22,7 @@ struct Bitmap
   explicit Bitmap(const std::string& imgPath);
 
   void DrawOther(std::size_t x0, std::size_t y0, const Bitmap& other);
-  void DrawLine(glm::ivec2 p00, glm::ivec2 p11, Pixel px);
+  void DrawLine(glm::ivec2 p00, glm::ivec2 p11, const std::vector<glm::u8vec3>& colors);
   void Clear();
 
   [[nodiscard]] auto&       at(std::size_t index)                  { return pixels_.at(index); }

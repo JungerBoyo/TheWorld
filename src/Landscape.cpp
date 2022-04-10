@@ -39,17 +39,13 @@ void Landscape::Render(ftxui::Screen &scr)
       //temporarly
       scrPx.character = "█";
 
-      if(fPx.ch == U' ')
+      if(!fPx.state)
       {
-        //scrPx.character = bPx.ch;
-
         const auto color = bPx.color;
         scrPx.foreground_color = ftxui::Color{ color[0], color[1], color[2] };
       }
       else
       {
-        //scrPx.character = fPx.ch;
-
         const auto color = fPx.color;
         scrPx.foreground_color = ftxui::Color{ color[0], color[1], color[2] };
       }
