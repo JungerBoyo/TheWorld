@@ -37,6 +37,9 @@ add_executable(intro
 
   CollisionValidator.hpp
   CollisionValidator.cpp
+
+  Skill.hpp
+  Skill.cpp
 ) 
 
 

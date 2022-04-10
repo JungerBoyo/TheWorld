@@ -9,8 +9,8 @@ struct CollisionValidator
   CollisionValidator(glm::ivec2 boxPoint00, glm::ivec2 boxPoint11);
 
   /// returns if test was passed in x and y axes
-  glm::bvec2 TestBox(glm::ivec2& boxPoint00, glm::ivec2 boxPoint11) const;
-
+  glm::bvec2 TestBox(glm::ivec2& boxPoint00, glm::ivec2& boxPoint11) const;
+  void TestLine(glm::ivec2& beginPoint, glm::ivec2& endPoint) const;
 
 private:
   glm::ivec2 p00_;

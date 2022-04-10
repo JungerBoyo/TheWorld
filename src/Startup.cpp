@@ -8,7 +8,7 @@ Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupO
   /// loading text for substages from json file
   std::ifstream stream(startupTextDataJsonPath.data());
 
-  assert(stream.good());
+  //assert(stream.good());// DEBUG
 
   nlohmann::json j;
   stream >> j;

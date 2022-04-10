@@ -4,7 +4,6 @@
 #include <cinttypes>
 #include <vector>
 #include <string_view>
-#include <glm/detail/type_vec2.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
@@ -23,6 +22,7 @@ struct Bitmap
   explicit Bitmap(const std::string& imgPath);
 
   void DrawOther(std::size_t x0, std::size_t y0, const Bitmap& other);
+  void DrawLine(glm::ivec2 p00, glm::ivec2 p11, Pixel px);
   void Clear();
 
   [[nodiscard]] auto&       at(std::size_t index)                  { return pixels_.at(index); }

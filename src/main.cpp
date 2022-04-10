@@ -12,19 +12,19 @@ int main()
 
   auto startup = std::make_shared<Startup>("game_startup_text_data/data.json", startupOut, [&selector]{ selector = 1; });
 
-  const std::array<std::string, World::HallCount> hallPaths
-  {{  
-    "game_maps/0.png",
-    "game_maps/0.png",
-    "game_maps/0.png",
-    "game_maps/0.png",
-    "game_maps/0.png",
-    "game_maps/0.png",
-    "game_maps/0.png",
-    "game_maps/0.png"
-  }};
+  std::array<std::string, World::HallCount> hallPaths;
+  hallPaths[0] = "game_maps/0.png";// NOLINT
+  hallPaths[1] = "game_maps/0.png";// NOLINT
+  hallPaths[2] = "game_maps/0.png";// NOLINT
+  hallPaths[3] = "game_maps/0.png";// NOLINT
+  hallPaths[4] = "game_maps/0.png";// NOLINT
+  hallPaths[5] = "game_maps/0.png";// NOLINT
+  hallPaths[6] = "game_maps/0.png";// NOLINT
+  hallPaths[7] = "game_maps/0.png";// NOLINT
 
-  auto world = std::make_shared<World>(static_cast<std::size_t>(scr.width() - 2), static_cast<std::size_t>(scr.height() - 2), startupOut, hallPaths, scr.ExitClosure());
+  constexpr std::size_t gameBottomPanelSize = 13;
+
+  auto world = std::make_shared<World>(static_cast<std::size_t>(scr.width() - 2), static_cast<std::size_t>(scr.height() - 2), startupOut, gameBottomPanelSize, hallPaths, scr.ExitClosure());
 
   auto gameTabs = ftxui::Container::Tab({startup, world}, &selector);
 

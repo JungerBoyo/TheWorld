@@ -7,7 +7,7 @@ AnimatedMovePattern::AnimatedMovePattern(std::string_view jsonDataFilePath)
 {
   std::ifstream stream(jsonDataFilePath.data());
 
-  assert(stream.good());
+  //assert(stream.good());
 
   nlohmann::json j;
   stream >> j;

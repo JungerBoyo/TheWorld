@@ -4,6 +4,8 @@
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/event.hpp>
 
+#include <array>
+
 #include "CollisionValidator.hpp"
 #include "Landscape.hpp"
 #include "Player.hpp"
@@ -16,6 +18,7 @@ struct World : ftxui::ComponentBase
     std::size_t width, 
     std::size_t height, 
     std::size_t& initialHallIndex,
+    std::size_t bottomPanelSize, 
     const std::array<std::string, HallCount>& hallPaths,
     std::function<void()> quitGameCallback);
 

@@ -2,6 +2,7 @@
 #define STARTUP_HPP
 
 #include <ftxui/component/component.hpp>
+#include <array>
 
 struct Startup : ftxui::ComponentBase
 {
@@ -21,14 +22,14 @@ private:
     std::string lhsButtonText_;
     std::string rhsButtonText_;
 
-    std::array<std::string, 3> textLines_;
+    std::array<std::string, 3> textLines_;// NOLINT 3 text lines at most
   };
 
   static constexpr std::size_t answerStageIndex { 3UL };
   static constexpr std::size_t lookStageIndex   { 4UL };
   static constexpr std::size_t imStageIndex     { 5UL };
   static constexpr std::pair<std::size_t, std::size_t> haveStageIndices{ 6UL, 7UL };
-  std::array<StartupSubstageInfo, 8> substageInfos_;
+  std::array<StartupSubstageInfo, 8> substageInfos_;// NOLINT 8 stages 
 
   std::string currentLhsButtonText_;
   std::string currentRhsButtonText_;

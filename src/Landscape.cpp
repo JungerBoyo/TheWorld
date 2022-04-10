@@ -3,14 +3,14 @@
 
 void Landscape::SetBackground(std::shared_ptr<Bitmap> bmp) 
 {
-  assert(bmp->width() == width_ && bmp->height() == height_);
+  //assert(bmp->width() == width_ && bmp->height() == height_);
 
   backgroundBmp_ = std::move(bmp);
 }
 
 void Landscape::SetForeground(std::shared_ptr<Bitmap> bmp)
 {
-  assert(bmp->width() == width_ && bmp->height() == height_);
+  //assert(bmp->width() == width_ && bmp->height() == height_);
 
   foregroundBmp_ = std::move(bmp);
 }
@@ -24,7 +24,7 @@ void Landscape::ComputeRequirement()
 
 void Landscape::Render(ftxui::Screen &scr) 
 {
-  assert(foregroundBmp_ && backgroundBmp_);
+  //assert(foregroundBmp_ && backgroundBmp_);
 
   for (std::size_t y{0}; y < height_; ++y) 
   {
