@@ -50,10 +50,10 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 
 # Set the project name and language
 project(
-  TheWorld
+  intro
   VERSION 0.0.1
   DESCRIPTION ""
-  HOMEPAGE_URL "https://github.com/JungerBoyo/TheWorld"
+  HOMEPAGE_URL "https://github.com/JungerBoyo/intro"
   LANGUAGES CXX C)
 
 set(GIT_SHA
@@ -146,11 +146,11 @@ if(MSVC)
 endif()
 
 # set the startup project for the "play" button in MSVC
-set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT TheWorld)
+set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT intro)
 
 # Add other targets that you want installed here, be default we just package the one executable
 # we know we want to ship
-package_project(TARGETS TheWorld)
+package_project(TARGETS intro)
 
 # Experience shows that explicit package naming can help make it easier to sort
 # out potential ABI related issues before they start, while helping you

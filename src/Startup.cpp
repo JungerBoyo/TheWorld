@@ -4,8 +4,6 @@
 #include <fstream>
 
 Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupOut, const std::function<void()>& contextSwitchCallback)
-  : currentLhsButtonText_(""),
-    currentRhsButtonText_("")
 {
   /// loading text for substages from json file
   std::ifstream stream(startupTextDataJsonPath.data());
@@ -29,8 +27,8 @@ Startup::Startup(std::string_view startupTextDataJsonPath, std::size_t& startupO
     ++i;
   }
 
-  currentLhsButtonText_ = substageInfos_.front().lhsButtonText_;
-  currentRhsButtonText_ = substageInfos_.front().rhsButtonText_;
+  currentLhsButtonText_ = substageInfos_.front().lhsButtonText_;// NOLINT
+  currentRhsButtonText_ = substageInfos_.front().rhsButtonText_;// NOLINT
 
   /// defining buttons
   startupOut = 0UL;
