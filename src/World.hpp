@@ -7,6 +7,7 @@
 #include <array>
 #include "Landscape.hpp"
 #include "Player.hpp"
+#include "Hall.hpp"
 
 struct World : ftxui::ComponentBase
 {
@@ -17,7 +18,7 @@ struct World : ftxui::ComponentBase
     std::size_t height, 
     std::size_t& initialHallIndex,
     std::size_t bottomPanelSize, 
-    const std::array<std::string, HallCount>& hallPaths,
+    const std::array<std::string, HallCount>& hallConfigPaths,
     std::function<void()> quitGameCallback);
 
   void NextIteration();
@@ -32,10 +33,10 @@ private:
 
   std::shared_ptr<Landscape> landscape_;
 
-  std::array<std::shared_ptr<Bitmap>, HallCount> halls_;
+  std::array<Hall, HallCount> halls_;
   std::shared_ptr<Bitmap> currentFrame_;
 
-  Player player_;
+  std::shared_ptr<Player> player_;
   Box worldBoundaryBox_;
 
   std::function<void()> quitGameCallback_;

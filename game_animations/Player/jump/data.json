@@ -1,0 +1,17 @@
+[
+  {
+    "moves":[
+      {
+        "repeats": 3,
+        "move": [0, -1],
+        "fps_timeout": 1
+      },
+      {
+        "repeats": 3,
+        "move": [0, 1],
+        "fps_timeout": 1
+      }
+    ],
+    "sprite_path": "game_animations/Player/jump/0.png"
+  }
+]

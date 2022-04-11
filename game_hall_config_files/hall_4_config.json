@@ -1,0 +1,13 @@
+{
+  "mapPath": "game_maps/boss_hall_4.png",
+  "boss":{
+    "appearAnimPath": "game_animations/eye_boss_4/appear/data.json",
+    "disappearAnimPath": "game_animations/eye_boss_4/disappear/data.json",
+    "targetAnimPath": "game_animations/eye_boss_4/target/data.json",
+    "health": 100,
+    "dmgCooldown": 3,
+    "randomSeed": 40,
+    "extent": [15, 5],
+    "name": "furious eye"
+  }
+}

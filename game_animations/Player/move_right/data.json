@@ -4,7 +4,7 @@
       {
         "repeats": 1,
         "move": [1, 0],
-        "fps_timeout": 1
+        "fps_timeout": 3
       }
     ],
     "sprite_path": "game_animations/Player/move_right/0.png"
@@ -14,7 +14,7 @@
       {
         "repeats": 1,
         "move": [1, 0],
-        "fps_timeout": 1
+        "fps_timeout": 3
       } 
     ],
     "sprite_path": "game_animations/Player/move_right/1.png"

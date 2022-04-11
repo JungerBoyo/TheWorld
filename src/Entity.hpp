@@ -12,8 +12,9 @@ struct Entity
 {
   Entity(glm::ivec2 pos, glm::ivec2 extent, int32_t dmgCooldown, int32_t health);
   
-  virtual void InflictDmg(int32_t dmg);
-  virtual void SetPosition(glm::ivec2 newPos);
+  void InflictDmg(int32_t dmg);
+  void SetPosition(glm::ivec2 newPos);
+  void RestoreHealth();
 
   virtual std::shared_ptr<const Bitmap> CurrentSprite() = 0;
 

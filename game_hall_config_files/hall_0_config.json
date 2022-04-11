@@ -1,0 +1,13 @@
+{
+  "mapPath": "game_maps/boss_hall_0.png",
+  "boss":{
+    "appearAnimPath": "game_animations/eye_boss_0/appear/data.json",
+    "disappearAnimPath": "game_animations/eye_boss_0/disappear/data.json",
+    "targetAnimPath": "game_animations/eye_boss_0/target/data.json",
+    "health": 100,
+    "dmgCooldown": 3,
+    "randomSeed": 40,
+    "extent": [15, 5],
+    "name": "livid eye"
+  }
+}

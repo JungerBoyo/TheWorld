@@ -12,19 +12,24 @@ int main()
 
   auto startup = std::make_shared<Startup>("game_startup_text_data/data.json", startupOut, [&selector]{ selector = 1; });
 
-  std::array<std::string, World::HallCount> hallPaths;
-  hallPaths[0] = "game_maps/0.png";// NOLINT
-  hallPaths[1] = "game_maps/0.png";// NOLINT
-  hallPaths[2] = "game_maps/0.png";// NOLINT
-  hallPaths[3] = "game_maps/0.png";// NOLINT
-  hallPaths[4] = "game_maps/0.png";// NOLINT
-  hallPaths[5] = "game_maps/0.png";// NOLINT
-  hallPaths[6] = "game_maps/0.png";// NOLINT
-  hallPaths[7] = "game_maps/0.png";// NOLINT
+  std::array<std::string, World::HallCount> hallConfigPaths;
+  hallConfigPaths[0] = "game_hall_config_files/hall_0_config.json";// NOLINT
+  hallConfigPaths[1] = "game_hall_config_files/hall_1_config.json";// NOLINT
+  hallConfigPaths[2] = "game_hall_config_files/hall_2_config.json";// NOLINT
+  hallConfigPaths[3] = "game_hall_config_files/hall_3_config.json";// NOLINT
+  hallConfigPaths[4] = "game_hall_config_files/hall_4_config.json";// NOLINT
+  hallConfigPaths[5] = "game_hall_config_files/hall_5_config.json";// NOLINT
+  hallConfigPaths[6] = "game_hall_config_files/hall_6_config.json";// NOLINT
+  hallConfigPaths[7] = "game_hall_config_files/hall_7_config.json";// NOLINT
 
   constexpr std::size_t gameBottomPanelSize = 13;
 
-  auto world = std::make_shared<World>(static_cast<std::size_t>(scr.width() - 2), static_cast<std::size_t>(scr.height() - 2), startupOut, gameBottomPanelSize, hallPaths, scr.ExitClosure());
+  auto world = std::make_shared<World>(
+    static_cast<std::size_t>(scr.width() - 2), 
+    static_cast<std::size_t>(scr.height() - 2), 
+    startupOut, gameBottomPanelSize, 
+    hallConfigPaths, 
+    scr.ExitClosure());
 
   auto gameTabs = ftxui::Container::Tab({startup, world}, &selector);
 

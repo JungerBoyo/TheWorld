@@ -42,6 +42,12 @@ add_executable(intro
   Box.cpp
   Line.hpp
   Line.cpp 
+
+  Boss.hpp
+  Boss.cpp
+
+  Hall.hpp
+  Hall.cpp
 ) 
 
 

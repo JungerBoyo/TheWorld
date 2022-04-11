@@ -35,3 +35,8 @@ void Entity::LaunchSkill(glm::ivec2 endPoint)
 {
   skill_->Launch(pos_ + (extent_/2), endPoint);// NOLINT    
 }
+
+void Entity::RestoreHealth()
+{
+  health_ = fullHealth_;    
+}

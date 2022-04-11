@@ -1,7 +1,7 @@
 #include "Box.hpp"
 #include <algorithm>
 #include <glm/glm.hpp>
-
+#include <array>
 
 static auto onSegment(glm::ivec2 p, glm::ivec2 q, glm::ivec2 r)
 {
@@ -37,10 +37,10 @@ static bool doIntersect(glm::ivec2 p1, glm::ivec2 q1, glm::ivec2 p2, glm::ivec2 
 bool Box::Intersects(Line& line) const  
 { 
   std::array<std::pair<glm::ivec2, glm::ivec2>, 4> boxLines;
-  boxLines[0] = {p00_, {p11_[0], p00_[1]}};
-  boxLines[1] = {boxLines[0].second, p11_};
-  boxLines[2] = {p11_, {p00_[0], p11_[1]}};
-  boxLines[3] = {boxLines[2].second, p00_};
+  boxLines.at(0) = {p00_, {p11_[0], p00_[1]}};
+  boxLines.at(1) = {boxLines.at(0).second, p11_};
+  boxLines.at(2) = {p11_, {p00_[0], p11_[1]}};
+  boxLines.at(3) = {boxLines.at(2).second, p00_};
 
   if(doIntersect(boxLines[0].first, boxLines[0].second, line.p0, line.p1))
   {

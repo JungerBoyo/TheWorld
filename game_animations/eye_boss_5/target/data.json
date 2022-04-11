@@ -1,0 +1,22 @@
+[
+  {
+    "moves":[
+      {
+        "repeats": 1,
+        "move": [0, 0],
+        "fps_timeout": 10
+      }
+    ],
+    "sprite_path": "game_animations/eye_boss_5/target/0.png"
+  },
+  {
+    "moves":[
+      {
+        "repeats": 1,
+        "move": [0, 0],
+        "fps_timeout": 10
+      } 
+    ],
+    "sprite_path": "game_animations/eye_boss_5/target/1.png"
+  }
+]
