@@ -82,7 +82,7 @@ void Bitmap::DrawLine(glm::ivec2 p00, glm::ivec2 p11, const std::vector<glm::u8v
   for (int32_t i{0}, x{p00[0]}, y{p00[1]}; 
         i < len && 
         ( x >= 0 && x < static_cast<int32_t>(width_) ) &&
-        ( y >= 0 && y < static_cast<int32_t>(height_) ); 
+        ( y >= 0 && y < static_cast<int32_t>(height_)) ; 
         ++i) 
   {
     auto& px = at(static_cast<std::size_t>(x), static_cast<std::size_t>(y));

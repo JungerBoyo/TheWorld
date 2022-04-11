@@ -37,8 +37,6 @@ World::World(
       worldBoundaryBox_.p00(), 
       worldBoundaryBox_.p11(),
       player_);
-
-    halls_.at(i).boss->SetSkill(std::make_shared<DirectionalRay>(worldBoundaryBox_)); 
   }
 
   currentFrame_ = std::make_shared<Bitmap>(width, height - bottomPanelSize);
@@ -46,7 +44,11 @@ World::World(
   landscape_->SetForeground(currentFrame_);
   landscape_->SetBackground(halls_.at(currentHallIndex_).map);
 
-  player_->SetSkill(std::make_shared<DirectionalRay>(worldBoundaryBox_));
+  auto* skillCast = dynamic_cast<DirectionalRay*>(halls_.at(currentHallIndex_).boss->skill().get());
+  if(skillCast != nullptr)
+  {
+    player_->SetSkill(std::make_shared<DirectionalRay>(*skillCast));
+  }
 }
 
 void World::NextIteration()

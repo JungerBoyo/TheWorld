@@ -1,7 +1,44 @@
 #include "Skill.hpp"
 #include "Entity.hpp"
-
+#include <algorithm>
 #include <glm/glm.hpp>
+
+
+#include <nlohmann/json.hpp>
+#include <fstream>
+
+
+Skill::Skill(Box skillBoundaryBox, std::string_view configFilePath)
+  : skillBoundaryBox_(skillBoundaryBox)
+{
+  std::ifstream stream(configFilePath.data());
+
+  nlohmann::json j;
+  stream >> j;
+  stream.close();
+
+  dmg_ = j["dmg"].get<int32_t>();
+  propagationSpeed_ = j["propagationSpeed"].get<int32_t>();
+  length_ = j["length"].get<int32_t>();
+  cooldown_ = j["cooldown"].get<int32_t>();
+  maxInstances_ = j["maxInstances"].get<std::size_t>();
+
+  instances_.reserve(maxInstances_);
+
+  
+  
+
+  for(const auto& jcolor : j["colors"]) 
+  {
+    glm::u8vec3 result{0,0,0};
+    for(std::size_t i{0}; i<3; ++i)
+    {
+      result[static_cast<int32_t>(i)] = jcolor[i].get<uint8_t>();
+    }
+
+    colors_.push_back(result);
+  }
+}
 
 void Skill::SkillInstance::Move()
 {
@@ -142,8 +179,8 @@ void Skill::AddInstance(SkillInstance instance)
 
 /// DIRECTIONAL RAY ///
 
-DirectionalRay::DirectionalRay(Box skillBoundaryBox)
-  : Skill(skillBoundaryBox, 10, 5, 50, 150, 1, {{255, 0, 0}, {255, 125, 0}})// NOLINT
+DirectionalRay::DirectionalRay(Box skillBoundaryBox, std::string_view configFilePath)
+  : Skill(skillBoundaryBox, configFilePath)
 {}
 
 void DirectionalRay::Launch(glm::ivec2 beginPoint, glm::ivec2 endPoint) 
@@ -160,13 +197,30 @@ void DirectionalRay::Launch(glm::ivec2 beginPoint, glm::ivec2 endPoint)
       return;
     }
 
-    //instance.p1 = static_cast<glm::ivec2>(instance.dir * static_cast<float>(this->skillLength())); 
-//
-    //if(!skillBoundaryBox_.IsIn(instance.p1))
-    //{
-    //  instance.p1[0] = std::clamp(instance.p1[0], skillBoundaryBox_.xMin() + 1, skillBoundaryBox_.xMax() - 1);
-    //  instance.p1[1] = std::clamp(instance.p1[1], skillBoundaryBox_.yMin() + 1, skillBoundaryBox_.yMax() - 1);
-    //}
+    const auto dx = std::abs(instance.p1[0] - instance.p0[0]);
+    const auto dy = std::abs(instance.p1[1] - instance.p0[1]);
+    const auto sx = instance.p1[0] > instance.p0[0] ? 1 : -1;
+    const auto sy = instance.p1[1] > instance.p0[1] ? 1 : -1;
+    const auto len = std::min(this->skillLength(), std::max(dx, dy));
+
+    auto error = dx - dy;
+    int32_t x{instance.p0[0]};
+    int32_t y{instance.p0[1]};
+    for (int32_t i{0}; i < len; ++i) 
+    {
+      if (error >= -dy) 
+      {
+        error -= dy;
+        x += sx;
+      }
+      if (error <= dx) 
+      {
+        error += dx;
+        y += sy;
+      }
+    }
+
+    instance.p1 = {x, y};
    
     this->ResetCooldownCounter();
     this->AddInstance(instance);

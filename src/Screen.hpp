@@ -6,14 +6,14 @@
 
 struct Screen
 {
-  Screen(int32_t width, int32_t height, double fps);
+  Screen(int32_t width, int32_t height, double fps);// NOLINT
 
-  void Draw(ftxui::Component component);
+  void Draw(ftxui::Component component) noexcept;
 
-  auto ExitClosure() { return nativeScr_.ExitLoopClosure(); }
+  auto ExitClosure() noexcept { return nativeScr_.ExitLoopClosure(); }
 
-  void TurnOnRefresher();
-  void TurnOffRefresher();
+  void TurnOnRefresher() noexcept;
+  void TurnOffRefresher() noexcept;
 
   [[nodiscard]] auto width() const  { return width_; }
   [[nodiscard]] auto height() const { return height_; }

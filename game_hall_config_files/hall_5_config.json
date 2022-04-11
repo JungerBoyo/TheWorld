@@ -4,6 +4,7 @@
     "appearAnimPath": "game_animations/eye_boss_5/appear/data.json",
     "disappearAnimPath": "game_animations/eye_boss_5/disappear/data.json",
     "targetAnimPath": "game_animations/eye_boss_5/target/data.json",
+    "skillPath":"game_skills/eye_5_skill.json",
     "health": 100,
     "dmgCooldown": 3,
     "randomSeed": 40,

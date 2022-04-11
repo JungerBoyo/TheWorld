@@ -39,4 +39,8 @@ Hall::Hall(
     jboss["targetAnimPath"].get<std::string>()
   );
 
+  boss->SetSkill(std::make_shared<DirectionalRay>(
+    Box(respawnLowerRestriction, respawnUpperRestriction),
+    jboss["skillPath"].get<std::string>()));
+
 }

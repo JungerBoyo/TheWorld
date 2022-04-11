@@ -1,6 +1,6 @@
 #include "Screen.hpp"
 
-Screen::Screen(int32_t width, int32_t height, double fps) 
+Screen::Screen(int32_t width, int32_t height, double fps)// NOLINT
   : 
     width_(width), 
     height_(height), 
@@ -8,7 +8,7 @@ Screen::Screen(int32_t width, int32_t height, double fps)
     nativeScr_(ftxui::ScreenInteractive::FixedSize(width, height))
 {}
 
-void Screen::TurnOnRefresher()
+void Screen::TurnOnRefresher() noexcept
 {
   loopEnd_ = false;
   refresherThread_ = std::thread([this]{
@@ -21,7 +21,7 @@ void Screen::TurnOnRefresher()
   });
 }
 
-void Screen::TurnOffRefresher() 
+void Screen::TurnOffRefresher() noexcept
 {
   loopEnd_ = true;
   if(refresherThread_.joinable())
@@ -30,7 +30,7 @@ void Screen::TurnOffRefresher()
   }
 }
 
-void Screen::Draw(ftxui::Component component) 
+void Screen::Draw(ftxui::Component component) noexcept
 {
   nativeScr_.Loop(std::move(component));
 }

@@ -25,26 +25,7 @@ struct Skill
     int32_t propagationCounter{0};
   };
 
-  Skill(
-    Box skillBoundaryBox,
-    int32_t dmg,
-    int32_t propagationSpeed, 
-    int32_t length, 
-    int32_t cooldown, 
-    std::size_t maxInstances,
-    const std::vector<glm::u8vec3>& colors
-  ) 
-  : 
-    skillBoundaryBox_(skillBoundaryBox),
-    dmg_(dmg),
-    propagationSpeed_(propagationSpeed),
-    length_(length),
-    cooldown_(cooldown),
-    maxInstances_(maxInstances),
-    colors_(colors)
-  {
-    instances_.reserve(maxInstances);
-  }
+  Skill(Box skillBoundaryBox, std::string_view configFilePath);
 
   virtual void Launch(glm::ivec2 beginPoint, glm::ivec2 endPoint) = 0;
   void Iteration(const std::shared_ptr<Entity>& objective);
@@ -84,7 +65,8 @@ _____
 */
 struct DirectionalRay : public Skill
 {
-  explicit DirectionalRay(Box skillBoundaryBox);
+  DirectionalRay(Box skillBoundaryBox, std::string_view configFilePath);
+
   void Launch(glm::ivec2 beginPoint, glm::ivec2 endPoint) override;
 };
 
