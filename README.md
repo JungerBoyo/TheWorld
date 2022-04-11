@@ -9,7 +9,7 @@ LGTM Has to be set up manually after template is created:
 [![Language grade: C++](https://img.shields.io/lgtm/grade/cpp/github/JungerBoyo/TheWorld)](https://lgtm.com/projects/g/JungerBoyo/TheWorld/context:cpp)
 
 ## About TheWorld
-Official submission to Cpp Best Practices Game Jam
+The world is a place where circles and squares come together. Only you can merge them to create the world! 
 
 
 ## More Details
