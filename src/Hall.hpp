@@ -14,6 +14,7 @@ struct Hall
     glm::ivec2 respawnLowerRestriction, glm::ivec2 respawnUpperRestriction,
     const std::shared_ptr<Entity>& player);
 
+  bool done{false};
   bool active{false};
   std::shared_ptr<Boss> boss;
   std::shared_ptr<Bitmap> map;

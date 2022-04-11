@@ -19,7 +19,8 @@ struct World : ftxui::ComponentBase
     std::size_t& initialHallIndex,
     std::size_t bottomPanelSize, 
     const std::array<std::string, HallCount>& hallConfigPaths,
-    std::function<void()> quitGameCallback);
+    std::function<void()> quitGameCallback,
+    std::function<void()> contextSwitchCallback);
 
   void NextIteration();
 
@@ -40,6 +41,7 @@ private:
   Box worldBoundaryBox_;
 
   std::function<void()> quitGameCallback_;
+  std::function<void()> contextSwitchCallback_;
 };
 
 #endif

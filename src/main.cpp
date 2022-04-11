@@ -29,9 +29,29 @@ int main()
     static_cast<std::size_t>(scr.height() - 2), 
     startupOut, gameBottomPanelSize, 
     hallConfigPaths, 
-    scr.ExitClosure());
+    scr.ExitClosure(),
+    [&selector]{ selector = 2; });// NOLINT
 
-  auto gameTabs = ftxui::Container::Tab({startup, world}, &selector);
+  auto endScrLandscape = std::make_shared<Landscape>(static_cast<std::size_t>(scr.width() - 2), static_cast<std::size_t>(scr.height() - 2));
+  endScrLandscape->SetBackground(std::make_shared<Bitmap>("game_maps/end_screen.png"));
+  endScrLandscape->SetForeground(std::make_shared<Bitmap>("game_maps/end_screen.png"));
+  
+  auto endScrRenderer = ftxui::CatchEvent(
+    ftxui::Renderer([&endScrLandscape]{ return endScrLandscape; }), 
+    [callback = scr.ExitClosure()](const ftxui::Event& ev){
+      if(ev.is_character())
+      {
+        if(tolower(static_cast<int>(ev.character().front())) == 'q')
+        {
+          callback();
+          return true;
+        }
+      }
+
+      return false;
+    });
+
+  auto gameTabs = ftxui::Container::Tab({startup, world, endScrRenderer}, &selector);
 
   scr.TurnOnRefresher();
     scr.Draw(gameTabs);

@@ -27,7 +27,7 @@ struct Entity
   [[nodiscard]] auto skill() const { return skill_; }
   [[nodiscard]] auto boundingBox() const { return Box(pos_, pos_ + extent_); }
   [[nodiscard]] auto healthStateNormalized() const { return static_cast<float>(health_)/static_cast<float>(fullHealth_); }
-  [[nodiscard]] auto dead() const { return health_ < 0; }
+  [[nodiscard]] auto dead() const { return health_ <= 0; }
 
   virtual ~Entity() = default;
 

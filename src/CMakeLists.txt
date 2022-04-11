@@ -8,7 +8,7 @@ find_package(glm CONFIG)
 include_directories(../)
 
 # Generic test that uses conan libs
-add_executable(intro 
+add_executable(TheWorld 
   main.cpp
 
   Screen.hpp
@@ -52,7 +52,7 @@ add_executable(intro
 
 
 target_link_libraries(
-  intro
+  TheWorld
   PRIVATE project_options
           project_warnings
           docopt::docopt
@@ -63,10 +63,10 @@ target_link_libraries(
           glm::glm)
 
 target_link_system_libraries(
-  intro
+  TheWorld
   PRIVATE
   ftxui::screen
   ftxui::dom
   ftxui::component)
 
-target_include_directories(intro PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
+target_include_directories(TheWorld PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")

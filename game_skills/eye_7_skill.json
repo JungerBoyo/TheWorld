@@ -1,11 +1,11 @@
 {
-  "dmg": 5,
-  "propagationSpeed": 3,
-  "length": 5,
-  "cooldown": 12,
-  "maxInstances": 3,
+  "dmg": 20,
+  "propagationSpeed": 1,
+  "length": 3,
+  "cooldown": 10,
+  "maxInstances": 5,
   "colors": [
-    [255, 0, 0],
-    [255, 125, 0]
+    [142, 86, 59],
+    [102, 56, 49]
   ]
 }

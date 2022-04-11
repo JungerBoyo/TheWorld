@@ -9,7 +9,8 @@ World::World(
   std::size_t& initialHallIndex,
   std::size_t bottomPanelSize, 
   const std::array<std::string, HallCount>& hallConfigPaths,
-  std::function<void()> quitGameCallback)
+  std::function<void()> quitGameCallback,
+  std::function<void()> contextSwitchCallback)
 : 
     width_(width),
     height_(height),
@@ -27,7 +28,8 @@ World::World(
             )),
   
     worldBoundaryBox_({0, 0}, {width, height - 9 - bottomPanelSize}), // NOLINT width of the ground = 9px
-    quitGameCallback_(std::move(quitGameCallback))
+    quitGameCallback_(std::move(quitGameCallback)),
+    contextSwitchCallback_(std::move(contextSwitchCallback))
 {
   for(std::size_t i{0}; i<hallConfigPaths.size(); ++i)
   {
@@ -54,21 +56,13 @@ World::World(
 void World::NextIteration()
 {
   /// DRAWING ///
-    /// PLAYER ///
-  const auto playerSprite = player_->CurrentSprite();
-  const auto playerPos = player_->pos();
-  const auto playerSkill = player_->skill();
-
-  currentFrame_->DrawOther(static_cast<std::size_t>(playerPos[0]), static_cast<std::size_t>(playerPos[1]), *playerSprite);
-  
-  const auto drawFn{
+    
+  const auto drawSkillFn{
   [frame = currentFrame_](const Skill::SkillInstance& value, const std::vector<glm::u8vec3>& colors){
     frame->DrawLine(value.p0, value.p1, colors);
   }};
 
-  playerSkill->ForEachInstance(drawFn);
-
-    /// BOSS ///
+      /// BOSS ///
   if(halls_.at(currentHallIndex_).active)
   {
     auto& hall = halls_.at(currentHallIndex_);
@@ -77,8 +71,17 @@ void World::NextIteration()
     const auto bossPos = hall.boss->pos();
  
     currentFrame_->DrawOther(static_cast<std::size_t>(bossPos[0]), static_cast<std::size_t>(bossPos[1]), *bossSprite);
-    hall.boss->skill()->ForEachInstance(drawFn);
+    hall.boss->skill()->ForEachInstance(drawSkillFn);
   }
+
+    /// PLAYER ///
+  const auto playerSprite = player_->CurrentSprite();
+  const auto playerPos = player_->pos();
+  const auto playerSkill = player_->skill();
+
+  currentFrame_->DrawOther(static_cast<std::size_t>(playerPos[0]), static_cast<std::size_t>(playerPos[1]), *playerSprite);
+  playerSkill->ForEachInstance(drawSkillFn);
+
   
 
   /// ITERATION ///
@@ -128,16 +131,29 @@ void World::NextIteration()
 
     playerSkill->Iteration(hall.boss);
 
-    const auto bossNextPos00 = hall.boss->nextPos();
-    const auto bossNextPos11 = bossNextPos00 + hall.boss->extent();
+    if(hall.boss->dead())
+    {
+      hall.done = true;
+      hall.active = false;
+    }
+    else if(hall.active)
+    {
+      const auto bossNextPos00 = hall.boss->nextPos();
+      const auto bossNextPos11 = bossNextPos00 + hall.boss->extent();
 
-    Box bossBox(bossNextPos00, bossNextPos11);
+      Box bossBox(bossNextPos00, bossNextPos11);
 
-    bossBox.ShiftToFitIn(worldBoundaryBox_);
+      bossBox.ShiftToFitIn(worldBoundaryBox_);
 
-    hall.boss->SetPosition(bossBox.p00());
+      hall.boss->SetPosition(bossBox.p00());
 
-    hall.boss->skill()->Iteration(player_);
+      hall.boss->skill()->Iteration(player_);
+      
+      if(player_->dead())
+      {
+        contextSwitchCallback_();
+      }
+    }
   } 
 }
 
@@ -210,7 +226,11 @@ bool World::OnEvent(ftxui::Event ev)
         return true;
       
       case 'i':
-          halls_.at(currentHallIndex_).active = true;
+          if(!halls_.at(currentHallIndex_).done)
+          {
+            halls_.at(currentHallIndex_).active = true;
+          }
+      
         return true;
 
       default: break;
